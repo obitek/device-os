@@ -1,3 +1,21 @@
+## 4.0.2
+
+### FEATURES
+
+- Fake 4.0.1 + bootloader bump
+
+### ENHANCEMENTS
+
+- WIP
+
+### BUGFIXES
+
+- WIP
+
+### INTERNAL
+
+- WIP
+
 ## 4.0.1
 
 ### FEATURES
