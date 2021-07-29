@@ -151,6 +151,27 @@ typedef enum
 
 } system_flag_t;
 
+/**
+ * Firmware update status.
+ */
+typedef enum {
+    /**
+     * The system will check for firmware updates when the device connects to the Cloud.
+     */
+    SYSTEM_UPDATE_STATUS_UNKNOWN = 0,
+    /**
+     * No firmware update available.
+     */
+    SYSTEM_UPDATE_STATUS_NO_UPDATE = 1,
+    /**
+     * A firmware update is available.
+     */
+    SYSTEM_UPDATE_STATUS_PENDING = 2,
+    /**
+     * A firmware update is in progress.
+     */
+    SYSTEM_UPDATE_STATUS_IN_PROGRESS = 3
+} system_update_status;
 
 void system_shutdown_if_needed();
 void system_pending_shutdown(System_Reset_Reason reason);
@@ -171,6 +192,11 @@ int system_refresh_flag(system_flag_t flag);
  */
 int system_format_diag_data(const uint16_t* id, size_t count, unsigned flags, appender_fn append, void* append_data,
         void* reserved);
+
+/**
+ * Return the firmware update status.
+ */
+int system_get_update_status(void* reserved);
 
 #ifdef __cplusplus
 }

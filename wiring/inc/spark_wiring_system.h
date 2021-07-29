@@ -618,6 +618,10 @@ public:
     	return get_flag(SYSTEM_FLAG_OTA_UPDATE_FORCED) != 0;
     }
 
+    int updateStatus() {
+        return system_get_update_status(nullptr /* reserved */);
+    }
+
     inline void enableReset() {
         set_flag(SYSTEM_FLAG_RESET_ENABLED, true);
     }

@@ -45,6 +45,7 @@
 #include "appender.h"
 #include "bytes2hexbuf.h"
 #include "system_threading.h"
+#include "check.h"
 #include <cstdio>
 #if HAL_PLATFORM_DCT
 #include "dct.h"
@@ -67,6 +68,7 @@ volatile uint8_t SPARK_CLOUD_CONNECTED;
 volatile uint8_t SPARK_CLOUD_HANDSHAKE_PENDING = 0;
 volatile uint8_t SPARK_CLOUD_HANDSHAKE_NOTIFY_DONE = 0;
 volatile uint8_t SPARK_FLASH_UPDATE;
+volatile uint8_t SPARK_UPDATE_PENDING_EVENT_RECEIVED = 0;
 volatile uint32_t TimingFlashUpdateTimeout;
 
 static_assert(SYSTEM_FLAG_OTA_UPDATE_PENDING==0, "system flag value");
@@ -879,3 +881,19 @@ bool system_metrics(appender_fn appender, void* append_data, uint32_t flags, uin
     const int ret = system_format_diag_data(nullptr, 0, flags, appender, append_data, nullptr);
     return ret == 0;
 };
+
+int system_get_update_status(void* reserved) {
+    SYSTEM_THREAD_CONTEXT_SYNC_CALL_RESULT(system_get_update_status(reserved));
+    if (system::FirmwareUpdate::instance()->isRunning()) {
+        return SYSTEM_UPDATE_STATUS_IN_PROGRESS;
+    }
+    if (!SPARK_UPDATE_PENDING_EVENT_RECEIVED) {
+        return SYSTEM_UPDATE_STATUS_UNKNOWN;
+    }
+    uint8_t pending = 0;
+    CHECK(system_get_flag(SYSTEM_FLAG_OTA_UPDATE_PENDING, &pending, nullptr /* reserved */));
+    if (pending) {
+        return SYSTEM_UPDATE_STATUS_PENDING;
+    }
+    return SYSTEM_UPDATE_STATUS_NO_UPDATE;
+}
