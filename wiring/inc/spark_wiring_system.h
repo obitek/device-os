@@ -87,6 +87,30 @@ enum WakeupReason {
     WAKEUP_REASON_UNKNOWN = 4
 };
 
+/**
+ * Firmware update status.
+ */
+enum class UpdateStatus: int {
+    /**
+     * The system will check for firmware updates when the device connects to the Cloud.
+     */
+    UNKNOWN = SYSTEM_UPDATE_STATUS_UNKNOWN,
+    /**
+     * No firmware update available.
+     */
+    NOT_AVAILABLE = SYSTEM_UPDATE_STATUS_NOT_AVAILABLE,
+    /**
+     * A firmware update is available.
+     */
+    PENDING = SYSTEM_UPDATE_STATUS_PENDING,
+    /**
+     * A firmware update is in progress.
+     */
+    IN_PROGRESS = SYSTEM_UPDATE_STATUS_IN_PROGRESS
+};
+
+PARTICLE_DEFINE_ENUM_COMPARISON_OPERATORS(UpdateStatus)
+
 struct SleepResult {
     SleepResult() {}
     SleepResult(WakeupReason r, system_error_t e, pin_t p = std::numeric_limits<pin_t>::max());
@@ -618,6 +642,12 @@ public:
     	return get_flag(SYSTEM_FLAG_OTA_UPDATE_FORCED) != 0;
     }
 
+    /**
+     * Get the firmware update status.
+     *
+     * @return A value defined by the `UpdateStatus` enum or a negative result code in case of
+     *         an error.
+     */
     int updateStatus() {
         return system_get_update_status(nullptr /* reserved */);
     }

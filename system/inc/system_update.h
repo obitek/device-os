@@ -162,7 +162,7 @@ typedef enum {
     /**
      * No firmware update available.
      */
-    SYSTEM_UPDATE_STATUS_NO_UPDATE = 1,
+    SYSTEM_UPDATE_STATUS_NOT_AVAILABLE = 1,
     /**
      * A firmware update is available.
      */
@@ -194,7 +194,10 @@ int system_format_diag_data(const uint16_t* id, size_t count, unsigned flags, ap
         void* reserved);
 
 /**
- * Return the firmware update status.
+ * Get the firmware update status.
+ *
+ * @return A value defined by the `system_update_status` enum or a negative result code in case of
+ *         an error.
  */
 int system_get_update_status(void* reserved);
 

@@ -117,6 +117,8 @@ DYNALIB_FN(BASE_IDX1 + 2, system, system_power_management_get_config, int(hal_po
 #define BASE_IDX2 (BASE_IDX1 + 2)
 #endif  // HAL_PLATFORM_POWER_MANAGEMENT
 
+DYNALIB_FN(BASE_IDX2 + 0, system, system_get_update_status, int(void*))
+
 DYNALIB_END(system)
 
 #undef BASE_IDX
