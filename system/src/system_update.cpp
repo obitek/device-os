@@ -52,6 +52,7 @@
 #endif // HAL_PLATFORM_DCT
 
 using namespace particle;
+using namespace particle::system;
 
 #ifdef START_DFU_FLASHER_SERIAL_SPEED
 static uint32_t start_dfu_flasher_serial_speed = START_DFU_FLASHER_SERIAL_SPEED;
@@ -377,7 +378,7 @@ int Spark_Prepare_For_Firmware_Update(FileTransfer::Descriptor& file, uint32_t f
     if (flags & 1) { // See ChunkedTransfer::handle_update_begin()
         f |= FirmwareUpdateFlag::VALIDATE_ONLY;
     }
-    return system::FirmwareUpdate::instance()->startUpdate(file.file_length, nullptr /* fileHash */, nullptr /* partialSize */, f);
+    return FirmwareUpdate::instance()->startUpdate(file.file_length, nullptr /* fileHash */, nullptr /* partialSize */, f);
 }
 
 int Spark_Finish_Firmware_Update(FileTransfer::Descriptor& file, uint32_t flags, void* reserved)
@@ -388,7 +389,7 @@ int Spark_Finish_Firmware_Update(FileTransfer::Descriptor& file, uint32_t flags,
     } else if (flags & protocol::UpdateFlag::VALIDATE_ONLY) {
         f |= FirmwareUpdateFlag::VALIDATE_ONLY;
     }
-    const int r = system::FirmwareUpdate::instance()->finishUpdate(f);
+    const int r = FirmwareUpdate::instance()->finishUpdate(f);
     if (!(f & FirmwareUpdateFlag::CANCEL)) {
         if (reserved) {
             const auto buf = (uint8_t*)reserved;
@@ -405,7 +406,7 @@ int Spark_Finish_Firmware_Update(FileTransfer::Descriptor& file, uint32_t flags,
 
 int Spark_Save_Firmware_Chunk(FileTransfer::Descriptor& file, const uint8_t* chunk, void* reserved)
 {
-    return system::FirmwareUpdate::instance()->saveChunk((const char*)chunk, file.chunk_size,
+    return FirmwareUpdate::instance()->saveChunk((const char*)chunk, file.chunk_size,
             file.chunk_address - file.file_address, 0 /* partialSize */);
 }
 
@@ -692,8 +693,6 @@ bool append_system_version_info(Appender* appender)
 
 namespace {
 
-using namespace particle;
-
 template <typename T>
 class AbstractDiagnosticsFormatter {
 
@@ -883,8 +882,8 @@ bool system_metrics(appender_fn appender, void* append_data, uint32_t flags, uin
 };
 
 int system_get_update_status(void* reserved) {
-    SYSTEM_THREAD_CONTEXT_SYNC_CALL_RESULT(system_get_update_status(reserved));
-    if (system::FirmwareUpdate::instance()->isRunning()) {
+    SYSTEM_THREAD_CONTEXT_SYNC(system_get_update_status(reserved));
+    if (FirmwareUpdate::instance()->isRunning()) {
         return SYSTEM_UPDATE_STATUS_IN_PROGRESS;
     }
     // TODO: Ideally, we'd want to have a status that would indicate that a check for updates is in
