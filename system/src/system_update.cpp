@@ -886,8 +886,6 @@ int system_get_update_status(void* reserved) {
     if (FirmwareUpdate::instance()->isRunning()) {
         return SYSTEM_UPDATE_STATUS_IN_PROGRESS;
     }
-    // TODO: Ideally, we'd want to have a status that would indicate that a check for updates is in
-    // progress, however there's currently no way for the device to perform such a check proactively
     if (!SPARK_UPDATE_PENDING_EVENT_RECEIVED) {
         return SYSTEM_UPDATE_STATUS_UNKNOWN;
     }
