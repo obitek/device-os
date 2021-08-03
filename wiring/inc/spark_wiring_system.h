@@ -40,6 +40,7 @@
 #include <mutex>
 #include "spark_wiring_system_power.h"
 #include "system_sleep_configuration.h"
+#include "underlying_type.h"
 
 #if defined(SPARK_PLATFORM) && PLATFORM_ID != PLATFORM_GCC
 #define SYSTEM_HW_TICKS 1
