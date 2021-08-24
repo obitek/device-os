@@ -1276,9 +1276,9 @@ int QuectelNcpClient::registerNet() {
 
     // Register GPRS, LET, NB-IOT network
     r = CHECK_PARSER(parser_.execCommand("AT+CREG=2"));
-    CHECK_TRUE(r == AtResponse::OK, SYSTEM_ERROR_UNKNOWN);
+    //CHECK_TRUE(r == AtResponse::OK, SYSTEM_ERROR_UNKNOWN);
     r = CHECK_PARSER(parser_.execCommand("AT+CGREG=2"));
-    CHECK_TRUE(r == AtResponse::OK, SYSTEM_ERROR_UNKNOWN);
+    //CHECK_TRUE(r == AtResponse::OK, SYSTEM_ERROR_UNKNOWN);
     r = CHECK_PARSER(parser_.execCommand("AT+CEREG=2"));
     CHECK_TRUE(r == AtResponse::OK, SYSTEM_ERROR_UNKNOWN);
 
@@ -1326,7 +1326,7 @@ int QuectelNcpClient::registerNet() {
     }
 
     CHECK_PARSER_OK(parser_.execCommand("AT+CREG?"));
-    CHECK_PARSER_OK(parser_.execCommand("AT+CGREG?"));
+    // CHECK_PARSER_OK(parser_.execCommand("AT+CGREG?"));
     CHECK_PARSER_OK(parser_.execCommand("AT+CEREG?"));
 
     regStartTime_ = millis();
