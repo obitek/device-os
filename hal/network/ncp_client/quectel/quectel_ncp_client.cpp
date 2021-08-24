@@ -642,7 +642,7 @@ int QuectelNcpClient::getCellularGlobalIdentity(CellularGlobalIdentity* cgi) {
     // Fill in LAC and Cell ID based on current RAT, prefer PSD and EPS
     // fallback to CSD
     CHECK_PARSER_OK(parser_.execCommand("AT+CEREG?"));
-    CHECK_PARSER_OK(parser_.execCommand("AT+CGREG?"));
+    //CHECK_PARSER_OK(parser_.execCommand("AT+CGREG?"));
     CHECK_PARSER_OK(parser_.execCommand("AT+CREG?"));
 
     switch (cgi->version)
@@ -1277,7 +1277,7 @@ int QuectelNcpClient::registerNet() {
     // Register GPRS, LET, NB-IOT network
     r = CHECK_PARSER(parser_.execCommand("AT+CREG=2"));
     //CHECK_TRUE(r == AtResponse::OK, SYSTEM_ERROR_UNKNOWN);
-    r = CHECK_PARSER(parser_.execCommand("AT+CGREG=2"));
+    //r = CHECK_PARSER(parser_.execCommand("AT+CGREG=2"));
     //CHECK_TRUE(r == AtResponse::OK, SYSTEM_ERROR_UNKNOWN);
     r = CHECK_PARSER(parser_.execCommand("AT+CEREG=2"));
     CHECK_TRUE(r == AtResponse::OK, SYSTEM_ERROR_UNKNOWN);
@@ -1722,7 +1722,7 @@ int QuectelNcpClient::processEventsImpl() {
     // Check GPRS, LET, NB-IOT network registration status
     CHECK_PARSER(parser_.execCommand("AT+CEER"));
     CHECK_PARSER_OK(parser_.execCommand("AT+CREG?"));
-    CHECK_PARSER_OK(parser_.execCommand("AT+CGREG?"));
+    //CHECK_PARSER_OK(parser_.execCommand("AT+CGREG?"));
     CHECK_PARSER_OK(parser_.execCommand("AT+CEREG?"));
 
     if (connState_ == NcpConnectionState::CONNECTING && millis() - regStartTime_ >= registrationTimeout_) {
