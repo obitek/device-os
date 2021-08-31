@@ -325,6 +325,13 @@ int QuectelNcpClient::initParser(Stream* stream) {
         self->checkImsi_ = true;
         return SYSTEM_ERROR_NONE;
     }, this));
+
+    // "+CGEV: NW DETACH" URC seen when using eDRX
+    CHECK(parser_.addUrcHandler("+CGEV: NW DETACH", [](AtResponseReader* reader, const char* prefix, void* data) -> int {
+        LOG(INFO,"CGEV network detach notice");
+        return SYSTEM_ERROR_NONE;
+    }, this));
+
     return SYSTEM_ERROR_NONE;
 }
 
@@ -1720,7 +1727,8 @@ int QuectelNcpClient::processEventsImpl() {
     SCOPE_GUARD({ regCheckTime_ = millis(); });
 
     // Check GPRS, LET, NB-IOT network registration status
-    CHECK_PARSER(parser_.execCommand("AT+CEER"));
+    CHECK_PARSER(parser_.execCommand("AT+CEER"));// TODO unknown on BG95, BG77
+    CHECK_PARSER(parser_.execCommand("AT+CMEE?"));
     CHECK_PARSER_OK(parser_.execCommand("AT+CREG?"));
     //CHECK_PARSER_OK(parser_.execCommand("AT+CGREG?"));
     CHECK_PARSER_OK(parser_.execCommand("AT+CEREG?"));
