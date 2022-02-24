@@ -243,15 +243,6 @@ int SaraNcpClient::initParser(Stream* stream) {
             self->imsiCheckTime_ = 0;
         }
         // self->checkRegistrationState();
-        // Cellular Global Identity (partial)
-        // Only update if unset
-        if (r >= 3) {
-            if (self->cgi_.location_area_code == std::numeric_limits<LacType>::max() &&
-                    self->cgi_.cell_id == std::numeric_limits<CidType>::max()) {
-                self->cgi_.location_area_code = static_cast<LacType>(val[1]);
-                self->cgi_.cell_id = static_cast<CidType>(val[2]);
-            }
-        }
         return SYSTEM_ERROR_NONE;
     }, this));
     // n={0,1} +CGREG: <stat>
@@ -2165,7 +2156,7 @@ void SaraNcpClient::resetRegistrationState() {
 
 void SaraNcpClient::checkRegistrationState() {
     if (connState_ != NcpConnectionState::DISCONNECTED) {
-        if ((csd_.registered() && psd_.registered()) || eps_.registered()) {
+        if (psd_.registered() || eps_.registered()) {
             if (memoryIssuePresent_ && connState_ != NcpConnectionState::CONNECTED) {
                 registeredTime_ = millis(); // start registered timer for memory issue power off delays
             }
