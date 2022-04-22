@@ -1,3 +1,22 @@
+## 4.0.0-alpha.1
+
+### FEATURES
+
+- Gen2 supply secure [#2442](https://github.com/particle-iot/device-os/pull/2442)
+- WIP
+
+### ENHANCEMENTS
+
+- WIP
+
+### BUGFIXES
+
+- WIP
+
+### INTERNAL
+
+- WIP
+
 ## 3.3.0
 
 ### FEATURES
