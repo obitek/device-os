@@ -1,3 +1,21 @@
+## 4.0.1
+
+### FEATURES
+
+- Dummy version of 4.0.0
+
+### ENHANCEMENTS
+
+- WIP
+
+### BUGFIXES
+
+- WIP
+
+### INTERNAL
+
+- WIP
+
 ## 4.0.0
 
 ### FEATURES
