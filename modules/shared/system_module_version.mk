@@ -20,7 +20,7 @@ BOOTLOADER_VERSION ?= 6000
 # NOTE: this will force the device into safe mode until this dependency is met, which is why
 # this version usually lags behind the current bootloader version, to avoid non-mandatory updates.
 ifeq ($(PLATFORM_GEN),3)
-BOOTLOADER_DEPENDENCY = 1101
+BOOTLOADER_DEPENDENCY = 6000
 else
 # Some sensible default
 BOOTLOADER_DEPENDENCY = 0
